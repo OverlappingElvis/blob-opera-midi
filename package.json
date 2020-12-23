@@ -1,18 +1,25 @@
 {
   "name": "blob-opera-midi",
   "version": "1.0.0",
-  "description": "",
+  "description": "Convert MIDI arrangements to Blob Opera JSON.",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
+  "author": "Jeremy Sher <OverlappingElvis@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "alea": "^1.0.0",
-    "blessed": "^0.1.81",
-    "blessed-contrib": "^4.8.20",
-    "lodash": "^4.17.20",
-    "midi-player-js": "^2.0.13"
-  }
+    "alea": "1.0.0",
+    "blessed": "0.1.81",
+    "blessed-contrib": "4.8.20",
+    "lodash": "4.17.20",
+    "midi-player-js": "2.0.13"
+  },
+  "bin": {
+    "blob-opera-midi": "index.js"
+  },
+  "preferGlobal": true,
+  "keywords": [
+    "midi",
+    "blob-opera",
+    "music",
+    "art"
+  ]
 }
