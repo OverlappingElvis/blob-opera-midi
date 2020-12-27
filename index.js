@@ -100,7 +100,7 @@ save.on(`press`, () => {
 
       if (nextEvent) {
 
-        duration = Math.min(((nextEvent.delta / MAX_TICKS) * songTime) / 2, DEFAULT_VOWEL_DURATION * 2)
+        duration = Math.min(((nextEvent.delta / MAX_TICKS) * songTime) / 2, DEFAULT_VOWEL_DURATION)
       }
 
       memo.push({
