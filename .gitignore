@@ -4,3 +4,4 @@ package-lock.json
 test.json
 *.mid
 *.mid.json
+test.js

@@ -11,7 +11,10 @@ const VOWELS = _.range(4)
 const CONSONANTS = _.range(5, 29)
 const VOICES = [`Soprano`, `Mezzo-Soprano`, `Tenor`, `Bass`]
 
-const getCurrentPhoneme = (tick, collection) => {
+const DEFAULT_VOWEL_DURATION = 0.20000000298023224
+const DEFAULT_CONSONANT_DURATION = 0.10000000149011612
+
+const getCurrentPhoneme = ({ tick }, collection) => {
 
   const prng = new Alea(tick)
 
@@ -80,9 +83,9 @@ save.on(`press`, () => {
 
   const parsedEvents = trackAssignments.map((trackIndex) => {
 
-    const track = noteEventsOnly[parseInt(trackIndex, 10)]
+    const track = noteEventsOnly[trackIndex]
 
-    return track.reduce((memo, event) => {
+    return track.reduce((memo, event, index, allEvents) => {
 
       if (!event.velocity) {
 
@@ -91,20 +94,27 @@ save.on(`press`, () => {
 
       const timeSeconds = Math.abs((event.tick / MAX_TICKS) * songTime + (Math.random() * 0.025 * _.sample([1, -1])))
 
+      let duration = DEFAULT_VOWEL_DURATION
+
+      const nextEvent = _.get(allEvents, index + 1)
+
+      if (nextEvent) {
+
+        duration = Math.min(((nextEvent.delta / MAX_TICKS) * songTime) / 2, DEFAULT_VOWEL_DURATION * 2)
+      }
+
       memo.push({
-        timeSeconds: timeSeconds,
+        timeSeconds,
         midiPitch: event.noteNumber,
         librettoChunk: {
           vowel: {
-            name: getCurrentPhoneme(event.tick, VOWELS),
-            duration: 0.20000000298023224
+            name: getCurrentPhoneme(event, VOWELS),
+            duration: duration
           },
-          suffix: [
-            {
-              name: getCurrentPhoneme(event.tick, CONSONANTS),
-              duration: 0.10000000149011612
-            }
-          ]
+          suffix: [{
+            name: getCurrentPhoneme(event, CONSONANTS),
+            duration: duration
+          }]
         }
       })
 
@@ -117,7 +127,7 @@ save.on(`press`, () => {
       startSuffix: [
         {
           name: _.sample(CONSONANTS),
-          duration: 0.10000000149011612
+          duration: DEFAULT_CONSONANT_DURATION
         }
       ]
     }
