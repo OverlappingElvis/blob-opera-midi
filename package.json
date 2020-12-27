@@ -1,6 +1,6 @@
 {
   "name": "blob-opera-midi",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Convert MIDI arrangements to Blob Opera JSON.",
   "main": "index.js",
   "author": "Jeremy Sher <OverlappingElvis@gmail.com>",
