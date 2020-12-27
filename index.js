@@ -113,7 +113,7 @@ save.on(`press`, () => {
           },
           suffix: [{
             name: getCurrentPhoneme(event, CONSONANTS),
-            duration: duration
+            duration: DEFAULT_CONSONANT_DURATION
           }]
         }
       })
