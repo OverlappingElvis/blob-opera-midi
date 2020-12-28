@@ -4,8 +4,6 @@ const _ = require(`lodash`)
 const VOWELS = _.range(4)
 const CONSONANTS = _.range(5, 29)
 
-const TRACK_ASSIGNMENTS = _.range(4)
-
 const DEFAULT_VOWEL_DURATION = 0.20000000298023224
 const DEFAULT_CONSONANT_DURATION = 0.10000000149011612
 

@@ -5,10 +5,17 @@ const _ = require(`lodash`)
 const { Player } = require(`midi-player-js`)
 const blessed = require(`blessed`)
 const contrib = require(`blessed-contrib`)
+const { program } = require(`commander`)
+
+program.version(`1.0.4`)
+.option(`-i --interactive`, `run in interactive mode`)
+.option(`-c --christmas`, `christmas blobs mode`)
+
+program.parse(process.argv)
 
 const MidiToBlob = require(`./src/midi-to-blob`)
 
-const inputFile = process.argv[2]
+const inputFile = program.args[0]
 
 if (_.isEmpty(inputFile) || _.last(inputFile.split(`.`)) !== `mid`) {
 
@@ -22,9 +29,21 @@ const converter = new MidiToBlob(player)
 
 player.loadFile(`./${inputFile}`)
 
-const timelines = converter.getTrackTimelines()
-
 const trackAssignments = [0, 1, 2, 3]
+
+if (!program.interactive) {
+
+  const song = converter.convert(trackAssignments, program.christmas)
+
+  return fs.writeFile(`${inputFile}.json`, JSON.stringify(song), () => {
+
+    console.log(`Wrote song to ${inputFile}.json`)
+
+    process.exit(0)
+  })
+}
+
+const timelines = converter.getTrackTimelines()
 
 const screen = blessed.screen()
 const grid = new contrib.grid({
