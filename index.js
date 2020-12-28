@@ -5,25 +5,8 @@ const _ = require(`lodash`)
 const { Player } = require(`midi-player-js`)
 const blessed = require(`blessed`)
 const contrib = require(`blessed-contrib`)
-const Alea = require(`alea`)
 
-const VOWELS = _.range(4)
-const CONSONANTS = _.range(5, 29)
-const VOICES = [`Soprano`, `Mezzo-Soprano`, `Tenor`, `Bass`]
-
-const DEFAULT_VOWEL_DURATION = 0.20000000298023224
-const DEFAULT_CONSONANT_DURATION = 0.10000000149011612
-
-const getCurrentPhoneme = ({ tick }, collection) => {
-
-  const prng = new Alea(tick)
-
-  const tickValue = Math.round(prng() * 1000)
-
-  return collection[tickValue % collection.length]
-}
-
-const player = new Player()
+const MidiToBlob = require(`./src/midi-to-blob`)
 
 const inputFile = process.argv[2]
 
@@ -32,27 +15,14 @@ if (_.isEmpty(inputFile) || _.last(inputFile.split(`.`)) !== `mid`) {
   throw new Error(`Must provide a midi file.`)
 }
 
+const VOICES = [`Soprano`, `Mezzo-Soprano`, `Tenor`, `Bass`]
+
+const player = new Player()
+const converter = new MidiToBlob(player)
+
 player.loadFile(`./${inputFile}`)
 
-const songTime = player.getSongTime()
-
-const allEvents = player.getEvents()
-
-const MAX_TICKS = _.last(_.maxBy(allEvents, (events) => _.last(events).tick)).tick
-
-const noteEventsOnly = allEvents.map(track => track.filter(event => [`Note on`, `Note off`].includes(event.name))).filter(track => !_.isEmpty(track))
-
-const timelines = noteEventsOnly.map((track, index) => {
-
-  return {
-    title: `Track ${index}`,
-    x: track.map(event => event.tick),
-    y: track.map(event => event.noteNumber),
-    style: {
-      line: _.times(3, () => Math.random() * 255)
-    }
-  }
-})
+const timelines = converter.getTrackTimelines()
 
 const trackAssignments = [0, 1, 2, 3]
 
@@ -81,62 +51,7 @@ const save = grid.set(4, 1, 1, 1, blessed.button, {
 
 save.on(`press`, () => {
 
-  const parsedEvents = trackAssignments.map((trackIndex) => {
-
-    const track = noteEventsOnly[trackIndex]
-
-    return track.reduce((memo, event, index, allEvents) => {
-
-      if (!event.velocity) {
-
-        return memo
-      }
-
-      const timeSeconds = Math.abs((event.tick / MAX_TICKS) * songTime + (Math.random() * 0.025 * _.sample([1, -1])))
-
-      let duration = DEFAULT_VOWEL_DURATION
-
-      const nextEvent = _.get(allEvents, index + 1)
-
-      if (nextEvent) {
-
-        duration = Math.min(((nextEvent.delta / MAX_TICKS) * songTime) / 2, DEFAULT_VOWEL_DURATION)
-      }
-
-      memo.push({
-        timeSeconds,
-        midiPitch: event.noteNumber,
-        librettoChunk: {
-          vowel: {
-            name: getCurrentPhoneme(event, VOWELS),
-            duration: duration
-          },
-          suffix: [{
-            name: getCurrentPhoneme(event, CONSONANTS),
-            duration: DEFAULT_CONSONANT_DURATION
-          }]
-        }
-      })
-
-      return memo
-    }, [])
-  }).map((track) => {
-
-    return {
-      notes: track,
-      startSuffix: [
-        {
-          name: _.sample(CONSONANTS),
-          duration: DEFAULT_CONSONANT_DURATION
-        }
-      ]
-    }
-  })
-
-  const song = {
-    theme: 1,
-    parts: parsedEvents
-  }
+  const song = converter.convert(trackAssignments, false)
 
   fs.writeFile(`${inputFile}.json`, JSON.stringify(song), () => {
 
