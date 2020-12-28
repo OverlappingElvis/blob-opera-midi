@@ -70,7 +70,7 @@ const save = grid.set(4, 1, 1, 1, blessed.button, {
 
 save.on(`press`, () => {
 
-  const song = converter.convert(trackAssignments, false)
+  const song = converter.convert(trackAssignments, program.christmas)
 
   fs.writeFile(`${inputFile}.json`, JSON.stringify(song), () => {
 
