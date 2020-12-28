@@ -21,6 +21,8 @@ If your MIDI is not in track order or you want to preview the track assignments:
 - Arrow keys to select parts to map, enter to bring up a dialog with a number input corresponding to MIDI tracks from track graph on right, click (yes, with your mouse) the export button, then `esc` or `q` to exit.
 - JSON file will be exported as `<filename>.mid.json`.
 
+Add the `--christmas` flag to put Santa hats on the blobs.
+
 See the excellent instructions by [0x2b3bfa0](https://github.com/0x2b3bfa0) https://github.com/0x2b3bfa0/blob-opera#testing on how to sideload your JSON file.
 
 ## Objections
