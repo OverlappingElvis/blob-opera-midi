@@ -23,7 +23,11 @@ If your MIDI is not in track order or you want to preview the track assignments:
 
 Add the `--christmas` flag to put Santa hats on the blobs.
 
-See the excellent instructions by [0x2b3bfa0](https://github.com/0x2b3bfa0) https://github.com/0x2b3bfa0/blob-opera#testing on how to sideload your JSON file.
+See the [excellent instructions](https://github.com/0x2b3bfa0/blob-opera#testing) by [0x2b3bfa0](https://github.com/0x2b3bfa0) on how to sideload your JSON file.
+
+You can also save your sideloaded song to a [shareable URL](https://artsandculture.google.com/experiment/blob-opera/AAHWrq360NcGbw?cp=eyJyIjoiS0JPbTd4amd4eTRkIn0.) by encoding it using `te.RecordingMessage.encode(<JSON>).finish()` at line 9428 of the main app file:
+
+![Screenshot of Chrome dev tools with a breakpoint set on line 9428 of prettified app source](https://i.imgur.com/Vyp9Pdv.png)
 
 ## Objections
 
