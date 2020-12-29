@@ -27,6 +27,8 @@ Add the `--christmas` flag to put Santa hats on the blobs.
 
 ### Sideloading the JSON file
 
+#### Method 1: Recording
+
 1. Open the [Blob Opera][1] web page, preferably with Google Chrome.
 2. [Open the developer tools][2]; usually by right-clicking anywhere and choosing **Inspect...**
 3. Browse to the application source file (`app.js`) and [add a breakpoint][3] on the first line of this function:
@@ -50,11 +52,19 @@ Add the `--christmas` flag to put Santa hats on the blobs.
           }
    ```
 4. Start a new recording by pressing the red button on the bottom-left corner and stop it again.
-5. Now you've hit the breakpoint; type `this.currentRecording = <contents>` where `<contents>` should be replaced by the contents of the `libretto.json` file generated previously.
+5. Now you've hit the breakpoint; type `this.currentRecording = <contents>` where `<contents>` should be replaced by the contents of the JSON file generated previously.
 6. Resume the execution by clicking the play button on the debugger.
 7. Wait a few seconds for the speed to stabilize and stop it.
 
-You can also save your sideloaded song to a [shareable URL](https://artsandculture.google.com/experiment/blob-opera/AAHWrq360NcGbw?cp=eyJyIjoiS0JPbTd4amd4eTRkIn0) by encoding it using `te.RecordingMessage.encode(<JSON>).finish()` at line 9428 of the main app file:
+#### Method 2 (deprecated): Load as holiday song
+
+1. Follow steps 1-3 above, but instead set a breakpoint at 9939 (`e.opera.enterPlaying(n)`)
+2. Click the holiday icon and select a song
+3. Breakpoint should trigger. Type `n = <contents>` where `<contents>` is the contents of your JSON file.
+4. Resume the execution by clicking the play button on the debugger.
+5. Immediately click stop and wait for the speed to sync, then click play.
+
+You can also save songs sideloaded with this method to a [shareable URL](https://artsandculture.google.com/experiment/blob-opera/AAHWrq360NcGbw?cp=eyJyIjoiS0JPbTd4amd4eTRkIn0) by encoding it using `te.RecordingMessage.encode(<JSON>).finish()` at line 9428 of the main app file:
 
 ![Screenshot of Chrome dev tools with a breakpoint set on line 9428 of prettified app source](https://i.imgur.com/Vyp9Pdv.png)
 
