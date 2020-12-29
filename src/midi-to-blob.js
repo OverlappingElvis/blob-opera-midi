@@ -70,7 +70,7 @@ class MidiToBlob {
 
       return track.reduce((memo, event, index, allEvents) => {
 
-        if (!event.velocity) {
+        if (!event.velocity || event.name === `Note off`) {
 
           return memo
         }
