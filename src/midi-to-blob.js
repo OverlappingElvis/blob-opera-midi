@@ -33,7 +33,7 @@ class MidiToBlob {
   getNoteEvents () {
 
     return this.player.getEvents()
-    .map(track => track.filter(event => [`Note on`, `Note off`].includes(event.name)))
+    .map(track => track.filter(event => [`Note on`].includes(event.name)))
     .filter(track => !_.isEmpty(track))
   }
 
