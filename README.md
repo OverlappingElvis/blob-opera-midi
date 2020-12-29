@@ -12,6 +12,8 @@ https://twitter.com/Overlapping/status/1338979256903208960
 
 ## Usage
 
+### Converting the MIDI file
+
 If your MIDI file is already exactly 4 tracks in SATB order:
 - `$ blob-opera-midi song.mid`
 - JSON file will be outputted to `<filename>.mid.json`
@@ -24,8 +26,6 @@ If your MIDI is not in track order or you want to preview the track assignments:
 Add the `--christmas` flag to put Santa hats on the blobs.
 
 ### Sideloading the JSON file
-
-## Testing
 
 1. Open the [Blob Opera][1] web page, preferably with Google Chrome.
 2. [Open the developer tools][2]; usually by right-clicking anywhere and choosing **Inspect...**
