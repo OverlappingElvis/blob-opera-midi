@@ -54,7 +54,7 @@ Add the `--christmas` flag to put Santa hats on the blobs.
 6. Resume the execution by clicking the play button on the debugger.
 7. Wait a few seconds for the speed to stabilize and stop it.
 
-You can also save your sideloaded song to a [shareable URL](https://artsandculture.google.com/experiment/blob-opera/AAHWrq360NcGbw?cp=eyJyIjoiS0JPbTd4amd4eTRkIn0.) by encoding it using `te.RecordingMessage.encode(<JSON>).finish()` at line 9428 of the main app file:
+You can also save your sideloaded song to a [shareable URL](https://artsandculture.google.com/experiment/blob-opera/AAHWrq360NcGbw?cp=eyJyIjoiS0JPbTd4amd4eTRkIn0) by encoding it using `te.RecordingMessage.encode(<JSON>).finish()` at line 9428 of the main app file:
 
 ![Screenshot of Chrome dev tools with a breakpoint set on line 9428 of prettified app source](https://i.imgur.com/Vyp9Pdv.png)
 
@@ -71,6 +71,11 @@ Yes, but that's not interesting to me and this has advantages over that like tem
 ### There's something wrong with the timing!
 
 Probably. Submit a github issue!
+
+## Related links
+
+- [blob-opera-toolkit](https://github.com/0x2b3bfa0/blob-opera-toolkit) (python, supports MusicXML with real lyrics)
+- [The Silvis Woodshed](http://gasilvis.net/) (MIDI scores for choral music, mostly in parts in SATB order)
 
 [1]: https://artsandculture.google.com/experiment/blob-opera/AAHWrq360NcGbw
 [2]: https://developers.google.com/web/tools/chrome-devtools/open
