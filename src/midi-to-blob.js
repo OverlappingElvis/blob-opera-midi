@@ -58,7 +58,7 @@ class MidiToBlob {
     })
   }
 
-  convert (trackAssignments = [0, 1, 2, 3], christmas = true) {
+  convert (trackAssignments = [0, 1, 2, 3], christmas = true, random = false) {
 
     const noteEvents = this.getNoteEvents()
     const maxTicks = this.getMaxTicks()
@@ -70,16 +70,39 @@ class MidiToBlob {
 
       return track.reduce((memo, event, index, allEvents) => {
 
+        const nextEvent = _.get(allEvents, index + 1)
+
+        const offset = random ? (Math.random() * 0.025 * _.sample([1, -1])) : 0
+
+        const offsetTimeSeconds = (event.tick / maxTicks) * songTime + offset
+
+        const timeSeconds = event.tick > 0 ? offsetTimeSeconds : Math.abs(offsetTimeSeconds)
+
         if (!event.velocity || event.name === `Note off`) {
+
+          if (nextEvent && nextEvent.delta > 500) {
+
+            memo.push({
+              timeSeconds: timeSeconds + DEFAULT_VOWEL_DURATION,
+              midiPitch: event.noteNumber,
+              librettoChunk: {
+                vowel: {
+                  name: 4,
+                  duration: DEFAULT_VOWEL_DURATION
+                },
+                suffix: [{
+                  name: this.getCurrentPhoneme(event, CONSONANTS),
+                  duration: DEFAULT_CONSONANT_DURATION
+                }]
+              },
+              controlled: false
+            })
+          }
 
           return memo
         }
 
-        const timeSeconds = Math.abs((event.tick / maxTicks) * songTime + (Math.random() * 0.025 * _.sample([1, -1])))
-
         let duration = DEFAULT_VOWEL_DURATION
-
-        const nextEvent = _.get(allEvents, index + 1)
 
         if (nextEvent) {
 
@@ -98,7 +121,8 @@ class MidiToBlob {
               name: this.getCurrentPhoneme(event, CONSONANTS),
               duration: DEFAULT_CONSONANT_DURATION
             }]
-          }
+          },
+          controlled: true
         })
 
         return memo
