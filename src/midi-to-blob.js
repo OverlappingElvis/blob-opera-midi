@@ -80,10 +80,10 @@ class MidiToBlob {
 
         if (!event.velocity || event.name === `Note off`) {
 
-          if (nextEvent && nextEvent.delta > 500) {
+          if (nextEvent && nextEvent.delta > 800) {
 
             memo.push({
-              timeSeconds: timeSeconds + DEFAULT_VOWEL_DURATION,
+              timeSeconds: timeSeconds + 0.5,
               midiPitch: event.noteNumber,
               librettoChunk: {
                 vowel: {
