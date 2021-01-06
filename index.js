@@ -10,6 +10,7 @@ const { program } = require(`commander`)
 program.version(`1.0.4`)
 .option(`-i --interactive`, `run in interactive mode`)
 .option(`-c --christmas`, `christmas blobs mode`)
+.option(`-r --random`, `add timing drift`)
 
 program.parse(process.argv)
 
@@ -33,7 +34,7 @@ const trackAssignments = [0, 1, 2, 3]
 
 if (!program.interactive) {
 
-  const song = converter.convert(trackAssignments, program.christmas)
+  const song = converter.convert(trackAssignments, program.christmas, program.random)
 
   return fs.writeFile(`${inputFile}.json`, JSON.stringify(song), () => {
 
