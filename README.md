@@ -20,7 +20,7 @@ If your MIDI file is already exactly 4 tracks in SATB order:
 
 If your MIDI is not in track order or you want to preview the track assignments:
 - `$ blob-opera-midi song.mid -i` or `$ blob-opera-midi song.mid --interactive`
-- Arrow keys to select parts to map, enter to bring up a dialog with a number input corresponding to MIDI tracks from track graph on right, click (yes, with your mouse) the export button, then `esc` or `q` to exit.
+- Arrow keys to select parts to map, enter to bring up a dialog with a number input corresponding to MIDI tracks from track graph on right, click (yes, with your mouse) the export button, then `esc` or `q` to exit. Alternatively, you can use the `ctrl-e` hotkey to export and immediately exit.
 - JSON file will be exported as `<filename>.mid.json`.
 
 Add the `--christmas` flag to put Santa hats on the blobs.
