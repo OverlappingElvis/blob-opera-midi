@@ -87,12 +87,7 @@ save.on(`press`, () => {
 
   const song = converter.convert(trackAssignments, program.christmas)
 
-  fs.writeFile(`${inputFile}.json`, JSON.stringify(song), () => {
-
-    log.log(`Wrote song to ${inputFile}.json`)
-
-    screen.render()
-  })
+  fs.writeFile(`${inputFile}.json`, JSON.stringify(song), () => exportSong())
 })
 
 line.setData(timelines)
