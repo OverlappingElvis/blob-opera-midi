@@ -69,6 +69,20 @@ const save = grid.set(4, 1, 1, 1, blessed.button, {
   content: `Export`
 })
 
+const defaultExportCallback = () => {
+
+  log.log(`Wrote song to ${inputFile}.json`)
+
+  screen.render()
+}
+
+const exportSong = (callback = defaultExportCallback) => {
+
+  const song = converter.convert(trackAssignments, program.christmas)
+
+  fs.writeFile(`${inputFile}.json`, JSON.stringify(song), callback)
+}
+
 save.on(`press`, () => {
 
   const song = converter.convert(trackAssignments, program.christmas)
@@ -83,10 +97,9 @@ save.on(`press`, () => {
 
 line.setData(timelines)
 
-screen.key(['escape', 'q', 'C-c'], function(ch, key) {
+screen.key([`escape`, `q`, `C-c`], () => process.exit(0))
 
-  return process.exit(0);
-})
+screen.key([`C-e`], () => exportSong(() => process.exit(0)))
 
 trackList.focus()
 
