@@ -83,12 +83,7 @@ const exportSong = (callback = defaultExportCallback) => {
   fs.writeFile(`${inputFile}.json`, JSON.stringify(song), callback)
 }
 
-save.on(`press`, () => {
-
-  const song = converter.convert(trackAssignments, program.christmas)
-
-  fs.writeFile(`${inputFile}.json`, JSON.stringify(song), () => exportSong())
-})
+save.on(`press`, () => exportSong())
 
 line.setData(timelines)
 
