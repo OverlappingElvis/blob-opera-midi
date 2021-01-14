@@ -11,6 +11,7 @@ program.version(`1.0.4`)
 .option(`-i --interactive`, `run in interactive mode`)
 .option(`-c --christmas`, `christmas blobs mode`)
 .option(`-r --random`, `add timing drift`)
+.option(`-f --free-pitch`, `don't lock midi pitches to singable range`)
 
 program.parse(process.argv)
 
@@ -34,7 +35,7 @@ const trackAssignments = [0, 1, 2, 3]
 
 if (!program.interactive) {
 
-  const song = converter.convert(trackAssignments, program.christmas, program.random)
+  const song = converter.convert(trackAssignments, program.christmas, program.random, program.freePitch)
 
   return fs.writeFile(`${inputFile}.json`, JSON.stringify(song), () => {
 
@@ -78,7 +79,7 @@ const defaultExportCallback = () => {
 
 const exportSong = (callback = defaultExportCallback) => {
 
-  const song = converter.convert(trackAssignments, program.christmas)
+  const song = converter.convert(trackAssignments, program.christmas, program.random, program.freePitch)
 
   fs.writeFile(`${inputFile}.json`, JSON.stringify(song), callback)
 }

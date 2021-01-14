@@ -4,7 +4,17 @@ Quick and dirty tool to convert 4-part MIDI arrangments to [Blob Opera](https://
 
 ## Background
 
-https://twitter.com/Overlapping/status/1338979256903208960
+[Blob Opera](https://artsandculture.google.com/experiment/blob-opera/AAHWrq360NcGbw) is a "machine learning experiment by David Li in collaboration with Google Arts & Culture", allowing users to "[create their] own opera inspired song with Blob Opera - no music skills required".
+
+It's definitely worth playing with the Blob Opera before using this tool. The musical toy can be controlled by dragging the blobs with your mouse or, if you have one connected, a MIDI input device like a keyboard or sequencer. Both of these methods have limitations. Mouse control is imprecise and only affects one voice at a time with no manual harmony. MIDI control can be used to play the blobs like an organ but cannot control individual voices as a range of absolute MIDI pitches is assigned to each blob, making complex arrangements difficult. To enable the blobs to sing arbitrary choral (SATB) arrangements I wrote a tool that converts multitrack MIDI files into the file format used by the blobs to play included example songs, and found a method to cause the blobs to load my file instead of the expected example file.
+
+Here are some of my results (Twitter video links):
+- [Here's to the Night, by Eve 6](https://twitter.com/Overlapping/status/1349549691948548096) (stable code)
+- [Hide and Seek, by Imogen Heap](https://twitter.com/Overlapping/status/1346698613536092163/video/1) (stable code)
+- [All Star (Bach Chorale Version), by Smash Mouth](https://twitter.com/Overlapping/status/1343308592066088961/video/1) (stable code)
+- [Ne Irascaris Domine, by William Byrd](https://twitter.com/Overlapping/status/1340073304812527616/video/1) (original proof of concept code)
+- [Canon in D](https://twitter.com/Overlapping/status/1339084156731441154/video/1) (original proof of concept code)
+
 
 ## Installation
 
@@ -16,14 +26,17 @@ https://twitter.com/Overlapping/status/1338979256903208960
 
 If your MIDI file is already exactly 4 tracks in SATB order:
 - `$ blob-opera-midi song.mid`
-- JSON file will be outputted to `<filename>.mid.json`
+- JSON file will be output to `<filename>.mid.json`
 
 If your MIDI is not in track order or you want to preview the track assignments:
 - `$ blob-opera-midi song.mid -i` or `$ blob-opera-midi song.mid --interactive`
 - Arrow keys to select parts to map, enter to bring up a dialog with a number input corresponding to MIDI tracks from track graph on right, click (yes, with your mouse) the export button, then `esc` or `q` to exit. Alternatively, you can use the `ctrl-e` hotkey to export and immediately exit.
 - JSON file will be exported as `<filename>.mid.json`.
 
-Add the `--christmas` flag to put Santa hats on the blobs.
+Other command-line flags:
+- `-r` or `--random` to add slight timing drift (may provide more naturalistic sound). By default, no drift is added.
+- `-f` or `--free-pitch` to allow notes outside of the comfortable range of the blobs. By default, pitches are clamped between 48 and 70, although the actual note produced by a blob may be in a different octave depending on range.
+- `-c` or `--christmas` to make the blobs wear santa hats (no effect when using Method 2 to load a song).
 
 ### Sideloading the JSON file
 

@@ -33,7 +33,7 @@ class MidiToBlob {
   getNoteEvents () {
 
     return this.player.getEvents()
-    .map(track => track.filter(event => [`Note on`, `Note off`].includes(event.name)))
+    .map(track => _.uniqBy(track.filter(event => [`Note on`, `Note off`].includes(event.name)), `tick`))
     .filter(track => !_.isEmpty(track))
   }
 
@@ -58,7 +58,27 @@ class MidiToBlob {
     })
   }
 
-  convert (trackAssignments = [0, 1, 2, 3], christmas = true, random = false) {
+  getMidiPitch ({ noteNumber }, freePitch) {
+
+    if (freePitch) {
+
+      return noteNumber
+    }
+
+    if (noteNumber < 48) {
+
+      return noteNumber + 12
+    }
+
+    if (noteNumber < 70) {
+
+      return noteNumber
+    }
+
+    return noteNumber - 12
+  }
+
+  convert (trackAssignments = [0, 1, 2, 3], christmas = true, random = false, freePitch = false) {
 
     const noteEvents = this.getNoteEvents()
     const maxTicks = this.getMaxTicks()
@@ -78,13 +98,15 @@ class MidiToBlob {
 
         const timeSeconds = event.tick > 0 ? offsetTimeSeconds : Math.abs(offsetTimeSeconds)
 
+        const midiPitch = this.getMidiPitch(event, freePitch)
+
         if (!event.velocity || event.name === `Note off`) {
 
           if (nextEvent && nextEvent.delta > 800) {
 
             memo.push({
+              midiPitch,
               timeSeconds: timeSeconds + 0.5,
-              midiPitch: event.noteNumber,
               librettoChunk: {
                 vowel: {
                   name: 4,
@@ -111,7 +133,7 @@ class MidiToBlob {
 
         memo.push({
           timeSeconds,
-          midiPitch: event.noteNumber,
+          midiPitch,
           librettoChunk: {
             vowel: {
               name: this.getCurrentPhoneme(event, VOWELS),
