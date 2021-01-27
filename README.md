@@ -1,6 +1,6 @@
 # blob-opera-midi
 
-Quick and dirty tool to convert 4-part MIDI arrangments to [Blob Opera](https://artsandculture.google.com/experiment/blob-opera/AAHWrq360NcGbw) format JSON.
+Quick and dirty tool to convert 4-part MIDI arrangements to [Blob Opera](https://artsandculture.google.com/experiment/blob-opera/AAHWrq360NcGbw) format JSON.
 
 ## Background
 
